@@ -4,6 +4,7 @@ import FocusTrap from 'react-focus-trap';
 
 // @ts-ignore
 import ExpandIcon from '../icons/expand-solid.svg';
+import { HeaderProps } from './Header';
 
 // import _ from 'lodash';
 
@@ -22,19 +23,20 @@ const ExpandButton = styled.button`
 `;
 
 interface ModalHeaderProps {
-    heading: string;
+    altHeading: string;
+    headerProps?: HeaderProps;
     headingId?: string;
     onClose(): void;
     onExpand?(): void;
 }
 
-const ModalHeader: React.FunctionComponent<ModalHeaderProps> = ({ heading, headingId, onClose, onExpand }) => (
+const ModalHeader: React.FunctionComponent<ModalHeaderProps> = ({ altHeading, headerProps, headingId, onClose, onExpand }) => (
   <header className="nice-padding" style={{marginBottom: '0', height: '50px'}}>
     <div className="row">
       <div className="left">
         <div className="col">
           <h1 id={headingId}>
-            {heading}
+            {headerProps?.title || altHeading}
           </h1>
         </div>
       </div>
@@ -70,7 +72,8 @@ const ModalSpinner: React.FunctionComponent<ModalSpinnerProps> = ({ isActive=fal
   </div>;
 
 interface ModalWindowProps {
-    heading: string;
+    altHeading: string;
+    headerProps?: HeaderProps;
     isLoading?: boolean;
     onClose(): void;
     onExpand?(): void;
@@ -162,7 +165,7 @@ const ModalWindow: React.FunctionComponent<ModalWindowProps> = (props) => {
                 <FocusTrap>
                     <div className="modal-dialog">
                         <div className="modal-content" style={{paddingBottom: '0'}}>
-                            <ModalHeader heading={props.heading} headingId={`${id.current}-title`} onClose={onClose} onExpand={props.onExpand} />
+                            <ModalHeader headerProps={props.headerProps} altHeading={props.altHeading} headingId={`${id.current}-title`} onClose={onClose} onExpand={props.onExpand} />
                             <div className="modal-body">
                                 <ModalSpinner isActive={props.isLoading && loadingSpinnerVisible}>
                                     {props.children}

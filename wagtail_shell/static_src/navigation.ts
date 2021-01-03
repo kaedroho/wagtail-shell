@@ -1,6 +1,8 @@
 import {shellFetch, ShellResponse} from './fetch';
 import { Mode } from './main';
 
+import {HeaderProps} from './components/Header';
+
 let nextFrameId: number = 1;
 
 export interface Frame {
@@ -8,6 +10,7 @@ export interface Frame {
     url: string;
     view: string;
     context: any;
+    headerProps?: HeaderProps;
     pushState: boolean;
 }
 
@@ -33,6 +36,7 @@ export class NavigationController {
                 url: window.location.pathname,
                 view: initialResponse.view,
                 context: initialResponse.context,
+                headerProps: initialResponse.header,
                 pushState: false,
             };
         }
@@ -72,6 +76,7 @@ export class NavigationController {
                     url,
                     view: response.view,
                     context: response.context,
+                    headerProps: response.header,
                     pushState,
                 };
 

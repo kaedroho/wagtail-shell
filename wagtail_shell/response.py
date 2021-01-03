@@ -1,5 +1,9 @@
+from bs4 import BeautifulSoup
+
 from django.http import JsonResponse
 from django.shortcuts import render
+
+from .ui import Header
 
 
 class ShellResponse(JsonResponse):
@@ -24,16 +28,26 @@ class ShellResponseLoadIt(ShellResponse):
 class ShellResponseRender(ShellResponse):
     status = 'render'
 
-    def get_data(self, view, context):
+    def get_data(self, view, context, header=None):
         return {
             'view': view,
             'context': context,
+            'header': header.as_json() if header else None,
         }
 
 
 class ShellResponseRenderHtml(ShellResponseRender):
     def get_data(self, html):
-        return super().get_data('iframe', {'html': html})
+        # HACK: Extract legacy header from HTML
+        soup = BeautifulSoup(html, 'html.parser')
+        header = Header.extract_from_legacy_html(soup)
+
+        if header:
+            return super().get_data('iframe', {
+                'html': str(soup),
+            }, header=header)
+        else:
+            return super().get_data('iframe', {'html': html})
 
 
 class ShellResponseNotFound(ShellResponse):

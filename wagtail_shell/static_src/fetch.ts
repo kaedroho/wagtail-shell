@@ -1,3 +1,4 @@
+import { HeaderProps } from "./components/Header";
 import { Mode } from "./main";
 
 interface ShellResponseLoadIt {
@@ -8,6 +9,7 @@ interface ShellResponseRender {
     status: 'render';
     view: string;
     context: any;
+    header?: HeaderProps;
 }
 
 interface ShellResponseNotFound {

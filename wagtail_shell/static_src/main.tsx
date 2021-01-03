@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import {LogoImages} from './components/Logo';
 import {Browser} from './components/Browser';
 import ModalWindow from './components/ModalWindow';
+import {Header} from './components/Header';
 
 import {Sidebar} from './components/Sidebar';
 import * as mixins from './components/common/mixins';
@@ -159,13 +160,13 @@ const Shell: React.FunctionComponent<ShellProps> = (props) => {
 
                 if (isLoading) {
                     return (
-                        <ModalWindow key={index} heading={navigationController.title} isLoading={true} onClose={() => closeTopModal()} onExpand={() => expandModal(index)}>
+                        <ModalWindow key={index} headerProps={navigationController.currentFrame.headerProps} altHeading={navigationController.title} isLoading={true} onClose={() => closeTopModal()} onExpand={() => expandModal(index)}>
                             <Browser navigationController={navigationController} openModal={(url) => openModal(index, url)} />
                         </ModalWindow>
                     );
                 } else {
                     return (
-                        <ModalWindow key={index} heading={navigationController.title} isLoading={false} onClose={() => closeTopModal()} onExpand={() => expandModal(index)}>
+                        <ModalWindow key={index} headerProps={navigationController.currentFrame.headerProps} altHeading={navigationController.title} isLoading={false} onClose={() => closeTopModal()} onExpand={() => expandModal(index)}>
                             <Browser navigationController={navigationController} openModal={(url) => openModal(index, url)} />
                         </ModalWindow>
                     );
@@ -175,6 +176,7 @@ const Shell: React.FunctionComponent<ShellProps> = (props) => {
                 <Sidebar {...props} collapsed={collapsed} navigationController={props.navigationController} onCollapse={setCollapsed} />
             </SidebarWrapper>
             <BrowserWrapper collapsed={collapsed} className={collapsed ? 'sidebar-collapsed' : ''}>
+                {props.navigationController.currentFrame.headerProps && <Header {...props.navigationController.currentFrame.headerProps} />}
                 <Browser navigationController={props.navigationController} openModal={(url) => openModal(null, url)} />
             </BrowserWrapper>
         </ShellWrapper>
